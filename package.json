@@ -1,0 +1,29 @@
+{
+  "name": "expressjs-restful-api-template",
+  "version": "0.0.1",
+  "author": "Fanesz",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "migrate:base": "bunx db-migrate --config ./migrations/migration.config.js -e default",
+    "migrate:schema": "bun run migrate:base -- -m ./migrations/schema",
+    "migrate:schema:create": "bun run migrate:schema create",
+    "migrate:schema:up": "bun run migrate:schema up",
+    "migrate:schema:down": "bun run migrate:schema down"
+  },
+  "dependencies": {
+    "db-migrate": "^0.11.14",
+    "db-migrate-mysql": "^3.0.0",
+    "dotenv": "^17.2.2",
+    "moment": "^2.30.1",
+    "sequelize": "^6.37.7",
+    "uuid": "^13.0.0",
+    "yup": "^1.7.1"
+  },
+  "devDependencies": {
+    "eslint": "^9.36.0",
+    "globals": "^16.4.0",
+    "nodemon": "^3.1.10",
+    "prettier": "^3.6.2"
+  }
+}
