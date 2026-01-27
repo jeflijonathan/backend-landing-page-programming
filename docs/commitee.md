@@ -1,68 +1,64 @@
 ## table commitee
-
-## id (PK) using uuid required true
-
-## id_leader (FK) using relation user required true
-
-## id_vice_leader (FK) using relation user required true
-
-## id_secretary (FK) using relation user required true
-
-## id_treasurer (FK) using relation user required true
-
-## start_year required true
-
-## end_year
-
-## created_at
-
-## updated_at
-
-## deleted_at
+---
+1. id (PK) using uuid required true
+2. id_leader (FK) using relation user required true
+3. id_vice_leader (FK) using relation user required true
+4. id_secretary (FK) using relation user required true
+5. id_treasurer (FK) using relation user required true
+6. start_year required true
+7. end_year
+8. created_at
+9. updated_at
+10. deleted_at
+---
 
 ## table member
-
-## id (PK) using uuid required true
-
-## id_user (FK) using relation user required true
-
-## id_commitee (FK) using relation commitee required true
-
-## created_at
-
-## updated_at
+---
+1. id (PK) using uuid required true
+2. id_user (FK) using relation user required true
+3. id_commitee (FK) using relation commitee required true
+4. created_at
+5. updated_at
+6. deleted_at
+---
 
 ## table coordinator
+---
+1. id (PK) using uuid required true
+2. id_user (FK) using relation user required true
+3. id_commitee (FK) using relation commitee required true
+4. created_at
+5. updated_at
+6. deleted_at
+---
 
-## id (PK) using uuid required true
+# deskripsi
+---
+Entity: Commitee
+controller: src/domain/commitee/commitee.controller.js
+model: src/domain/commitee/commitee.model.js
+repository: src/domain/commitee/commitee.repository.js
+service: src/domain/commitee/commitee.service.js
+dto: 
+src/domain/commitee/dto/commiteeCreate.dto.js
+src/domain/commitee/dto/commiteeUpdate.dto.js
+src/domain/commitee/dto/index.js
+unitTesting: src/testing/commitee.test.js
+read common: 
+1. using base controller
+2. using base DTO
+3. using base MYSQL
+and consts form comon
+dbField.js
+statusCode.js
+userRole.js 
+---
 
-## id_user (FK) using relation user required true
-
-## id_commitee (FK) using relation commitee required true
-
-## created_at
-
-## updated_at
-
-## Entity: StructureCommitee
-
-## controller: StructureCommiteeController
-
-# location folder controller:App/Http/Controllers/StructureCommiteeController.php
-
-## model: StructureCommiteeModel
-
-# location folder model:App/Models/StructureCommitee.php
-
-## Request: StructureCommiteeRequest App/Http/Requests/StructureCommiteeRequest.php
-
-# location folder App/Http/Requests/StructureCommiteeRequest.php
-
-## unit test: StructureCommiteeTest tests/Unit/StructureCommiteeTest.php
-
-# location folder tests/Unit/StructureCommiteeTest.php
-
-## GET commitee GET /api/commitee
+## GET
+---
+endpoing: /api/commitee
+allowed role: pimpinan
+---
 
 /*json
 {
@@ -76,7 +72,6 @@
 "id_vice_leader": "uuid-user-vice",
 "id_secretary": "uuid-user-secretary",
 "id_treasurer": "uuid-user-treasurer",
-
       "leader": {
         "id": "uuid-user-leader",
         "npm": "2327240094",
