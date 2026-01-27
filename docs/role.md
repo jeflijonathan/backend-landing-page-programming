@@ -75,13 +75,6 @@
     },
     {
       "id": "object-id",
-      "name": "VICELEADER",
-      "status": true,
-      "created_at": "2026-01-16T00:05:50.000Z",
-      "updated_at": "2026-01-16T00:05:50.000Z"
-    },
-    {
-      "id": "object-id",
       "name": "COORDINATOR",
       "status": true,
       "created_at": "2026-01-16T00:05:50.000Z",
