@@ -1,56 +1,112 @@
-export const StatusOk = 200;
-export const StatusCreated = 201;
-export const StatusAccepted = 202;
-export const StatusNonAuthoritativeInformation = 203;
-export const StatusNoContent = 204;
-export const StatusResetContent = 205;
-export const StatusPartialContent = 206;
+const StatusOk = 200;
+const StatusCreated = 201;
+const StatusAccepted = 202;
+const StatusNonAuthoritativeInformation = 203;
+const StatusNoContent = 204;
+const StatusResetContent = 205;
+const StatusPartialContent = 206;
 
-export const StatusMultipleChoices = 300;
-export const StatusMovedPermanently = 301;
-export const StatusFound = 302;
-export const StatusSeeOther = 303;
-export const StatusNotModified = 304;
-export const StatusTemporaryRedirect = 307;
-export const StatusPermanentRedirect = 308;
+const StatusMultipleChoices = 300;
+const StatusMovedPermanently = 301;
+const StatusFound = 302;
+const StatusSeeOther = 303;
+const StatusNotModified = 304;
+const StatusTemporaryRedirect = 307;
+const StatusPermanentRedirect = 308;
 
-export const StatusBadRequest = 400;
-export const StatusUnauthorized = 401;
-export const StatusPaymentRequired = 402;
-export const StatusForbidden = 403;
-export const StatusNotFound = 404;
-export const StatusMethodNotAllowed = 405;
-export const StatusNotAcceptable = 406;
-export const StatusProxyAuthenticationRequired = 407;
-export const StatusRequestTimeout = 408;
-export const StatusConflict = 409;
-export const StatusGone = 410;
-export const StatusLengthRequired = 411;
-export const StatusPreconditionFailed = 412;
-export const StatusPayloadTooLarge = 413;
-export const StatusURITooLong = 414;
-export const StatusUnsupportedMediaType = 415;
-export const StatusRangeNotSatisfiable = 416;
-export const StatusExpectationFailed = 417;
-export const StatusImATeapot = 418;
-export const StatusMisdirectedRequest = 421;
-export const StatusUnprocessableEntity = 422;
-export const StatusLocked = 423;
-export const StatusFailedDependency = 424;
-export const StatusTooEarly = 425;
-export const StatusUpgradeRequired = 426;
-export const StatusPreconditionRequired = 428;
-export const StatusTooManyRequests = 429;
-export const StatusRequestHeaderFieldsTooLarge = 431;
+const StatusBadRequest = 400;
+const StatusUnauthorized = 401;
+const StatusPaymentRequired = 402;
+const StatusForbidden = 403;
+const StatusNotFound = 404;
+const StatusMethodNotAllowed = 405;
+const StatusNotAcceptable = 406;
+const StatusProxyAuthenticationRequired = 407;
+const StatusRequestTimeout = 408;
+const StatusConflict = 409;
+const StatusGone = 410;
+const StatusLengthRequired = 411;
+const StatusPreconditionFailed = 412;
+const StatusPayloadTooLarge = 413;
+const StatusURITooLong = 414;
+const StatusUnsupportedMediaType = 415;
+const StatusRangeNotSatisfiable = 416;
+const StatusExpectationFailed = 417;
+const StatusImATeapot = 418;
+const StatusMisdirectedRequest = 421;
+const StatusUnprocessableEntity = 422;
+const StatusLocked = 423;
+const StatusFailedDependency = 424;
+const StatusTooEarly = 425;
+const StatusUpgradeRequired = 426;
+const StatusPreconditionRequired = 428;
+const StatusTooManyRequests = 429;
+const StatusRequestHeaderFieldsTooLarge = 431;
 
-export const StatusInternalServerError = 500;
-export const StatusNotImplemented = 501;
-export const StatusBadGateway = 502;
-export const StatusServiceUnavailable = 503;
-export const StatusGatewayTimeout = 504;
-export const StatusHTTPVersionNotSupported = 505;
-export const StatusVariantAlsoNegotiates = 506;
-export const StatusInsufficientStorage = 507;
-export const StatusLoopDetected = 508;
-export const StatusNotExtended = 510;
-export const StatusNetworkAuthenticationRequired = 511;
+const StatusInternalServerError = 500;
+const StatusNotImplemented = 501;
+const StatusBadGateway = 502;
+const StatusServiceUnavailable = 503;
+const StatusGatewayTimeout = 504;
+const StatusHTTPVersionNotSupported = 505;
+const StatusVariantAlsoNegotiates = 506;
+const StatusInsufficientStorage = 507;
+const StatusLoopDetected = 508;
+const StatusNotExtended = 510;
+const StatusNetworkAuthenticationRequired = 511;
+
+module.exports = {
+    StatusOk,
+    StatusCreated,
+    StatusAccepted,
+    StatusNonAuthoritativeInformation,
+    StatusNoContent,
+    StatusResetContent,
+    StatusPartialContent,
+    StatusMultipleChoices,
+    StatusMovedPermanently,
+    StatusFound,
+    StatusSeeOther,
+    StatusNotModified,
+    StatusTemporaryRedirect,
+    StatusPermanentRedirect,
+    StatusBadRequest,
+    StatusUnauthorized,
+    StatusPaymentRequired,
+    StatusForbidden,
+    StatusNotFound,
+    StatusMethodNotAllowed,
+    StatusNotAcceptable,
+    StatusProxyAuthenticationRequired,
+    StatusRequestTimeout,
+    StatusConflict,
+    StatusGone,
+    StatusLengthRequired,
+    StatusPreconditionFailed,
+    StatusPayloadTooLarge,
+    StatusURITooLong,
+    StatusUnsupportedMediaType,
+    StatusRangeNotSatisfiable,
+    StatusExpectationFailed,
+    StatusImATeapot,
+    StatusMisdirectedRequest,
+    StatusUnprocessableEntity,
+    StatusLocked,
+    StatusFailedDependency,
+    StatusTooEarly,
+    StatusUpgradeRequired,
+    StatusPreconditionRequired,
+    StatusTooManyRequests,
+    StatusRequestHeaderFieldsTooLarge,
+    StatusInternalServerError,
+    StatusNotImplemented,
+    StatusBadGateway,
+    StatusServiceUnavailable,
+    StatusGatewayTimeout,
+    StatusHTTPVersionNotSupported,
+    StatusVariantAlsoNegotiates,
+    StatusInsufficientStorage,
+    StatusLoopDetected,
+    StatusNotExtended,
+    StatusNetworkAuthenticationRequired,
+};
