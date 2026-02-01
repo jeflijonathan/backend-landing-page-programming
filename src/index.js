@@ -12,6 +12,8 @@ const defineDivisionModel = require("./domains/division/division.model");
 const defineRoleModel = require("./domains/role/role.model");
 const defineRoleUserModel = require("./domains/role/roleUser.model");
 const defineUploadFileModel = require("./domains/uploadFile/uploadFile.model");
+const defineGalleryModel = require("./domains/gallery/gallery.model");
+const defineGalleryMediaModel = require("./domains/gallery/galleryMedia.model");
 
 // Repositories
 const AuthRepository = require("./domains/auth/auth.repository");
@@ -19,6 +21,7 @@ const UserRepository = require("./domains/users/user.repository");
 const DivisionRepository = require("./domains/division/division.repository");
 const RoleRepository = require("./domains/role/role.repository");
 const UploadFileRepository = require("./domains/uploadFile/uploadFile.repository");
+const GalleryRepository = require("./domains/gallery/gallery.repository");
 
 // Services
 const AuthService = require("./domains/auth/auth.service");
@@ -26,6 +29,7 @@ const UserService = require("./domains/users/user.service");
 const DivisionService = require("./domains/division/division.service");
 const RoleService = require("./domains/role/role.service");
 const UploadFileService = require("./domains/uploadFile/uploadFile.service");
+const GalleryService = require("./domains/gallery/gallery.service");
 
 // Controllers
 const AuthController = require("./domains/auth/auth.controller");
@@ -33,6 +37,7 @@ const UserController = require("./domains/users/user.controller");
 const DivisionController = require("./domains/division/division.controller");
 const RoleController = require("./domains/role/role.controller");
 const UploadFileController = require("./domains/uploadFile/uploadFile.controller");
+const GalleryController = require("./domains/gallery/gallery.controller");
 
 const db = new PostgresDatabase();
 const sequelize = db.getDbInstance();
@@ -45,9 +50,11 @@ const Division = defineDivisionModel(sequelize);
 const Role = defineRoleModel(sequelize);
 const RoleUser = defineRoleUserModel(sequelize);
 const UploadFile = defineUploadFileModel(sequelize);
+const Gallery = defineGalleryModel(sequelize);
+const GalleryMedia = defineGalleryMediaModel(sequelize);
 
 // Associate Models
-const models = { User, Post, Auth, Division, Role, RoleUser, UploadFile };
+const models = { User, Post, Auth, Division, Role, RoleUser, UploadFile, Gallery, GalleryMedia };
 Object.values(models).forEach((model) => {
   if (model.associate) {
     model.associate(models);
@@ -65,18 +72,21 @@ const userRepo = new UserRepository(User);
 const divisionRepo = new DivisionRepository(Division);
 const roleRepo = new RoleRepository(Role);
 const uploadFileRepo = new UploadFileRepository(UploadFile);
+const galleryRepo = new GalleryRepository(Gallery);
 
 const authService = new AuthService(userRepo, authRepo);
 const userService = new UserService(userRepo, Post); // Pass Post model for transaction/creation
 const divisionService = new DivisionService(divisionRepo);
 const roleService = new RoleService(roleRepo);
 const uploadFileService = new UploadFileService(uploadFileRepo);
+const galleryService = new GalleryService(galleryRepo, GalleryMedia);
 
 const authController = new AuthController(authService);
 const userController = new UserController(userService);
 const divisionController = new DivisionController(divisionService);
 const roleController = new RoleController(roleService);
 const uploadFileController = new UploadFileController(uploadFileService);
+const galleryController = new GalleryController(galleryService);
 
 // Mount Routes
 server.app.use("/api", require("./middleware/rateLimit.middleware")); // Global Rate Limiter (5 req/min)
@@ -85,6 +95,7 @@ server.app.use("/api", userController.getRouter());
 server.app.use("/api", divisionController.getRouter());
 server.app.use("/api", roleController.getRouter());
 server.app.use("/api", uploadFileController.getRouter());
+server.app.use("/api", galleryController.getRouter());
 
 // Setup error handlers (must be after all routes)
 server.setupErrorHandler();
