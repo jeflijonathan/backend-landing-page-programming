@@ -8,11 +8,11 @@ class GalleryController extends BaseController {
     }
 
     initRoutes() {
-        this.router.get("/feed", this.getAllGalleries.bind(this));
-        this.router.get("/feed/:id", this.getGalleryById.bind(this));
-        this.router.post("/feed", this.createGallery.bind(this));
-        this.router.put("/feed/:id", this.updateGallery.bind(this));
-        this.router.delete("/feed/:id", this.deleteGallery.bind(this));
+        this.router.get("/gallery", this.getAllGalleries.bind(this));
+        this.router.get("/gallery/:id", this.getGalleryById.bind(this));
+        this.router.post("/gallery", this.createGallery.bind(this));
+        this.router.put("/gallery/:id", this.updateGallery.bind(this));
+        this.router.delete("/gallery/:id", this.deleteGallery.bind(this));
     }
 
     async createGallery(req, res) {
