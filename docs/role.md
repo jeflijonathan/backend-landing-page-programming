@@ -2,12 +2,36 @@
 # tabel Roles:
 ---
 1. id (uuid) primary key = idRole-uuid
-2. name (string) unique (value = LEADER, COORDINATOR, SECRETARY, TREASURER, MEMBER)
+2. name (string) unique
 3. status (boolean)
 4. created_at (timestamp)
 5. updated_at (timestamp)
 relation with table role_users (one to many)
 ---
+
+# description
+--- 
+Entity: Role
+controller: RoleController
+seeder: LEADER, COORDINATOR, SECRETARY, TREASURER, MEMBER
+model: Role
+repository: RoleRepository
+service: RoleService
+dto: 
+src/domain/role/dto/roleCreate.dto.js
+src/domain/role/dto/roleUpdate.dto.js
+src/domain/role/dto/index.js
+unitTesting: src/testing/role.test.js
+read common: 
+1. using base controller
+2. using base DTO
+3. using base MYSQL
+and consts form comon
+dbField.js
+statusCode.js
+userRole.js 
+---
+
 # tabel posts
 ---
 1. id (uuid) primary key = idPost-uuid
@@ -38,8 +62,8 @@ relation with table users (one to many)
 ---
 
 # description
----
 description:
+---
 Entity: Role
 controller: RoleController
 model: Role
@@ -111,5 +135,53 @@ userRole.js
       "total": 5,
       "total_pages": 1
   }
+}
+*/
+
+# Options Role
+endpoint: OPTIONS /api/options/role
+Response success
+/*json
+{
+  "status": "Success",
+  "status_code": 200,
+  "message": "Role Options Successfully Fetched",
+  "data": [
+    {
+      "id": "object-id",
+      "name": "LEADER",
+      "status": true,
+      "created_at": "2026-01-16T00:05:50.000Z",
+      "updated_at": "2026-01-16T00:05:50.000Z"
+    },
+    {
+      "id": "object-id",
+      "name": "COORDINATOR",
+      "status": true,
+      "created_at": "2026-01-16T00:05:50.000Z",
+      "updated_at": "2026-01-16T00:05:50.000Z"
+    },
+    {
+      "id": "object-id",
+      "name": "SECRETARY",
+      "status": true,
+      "created_at": "2026-01-16T00:05:50.000Z",
+      "updated_at": "2026-01-16T00:05:50.000Z"
+    },
+    {
+      "id": "object-id",
+      "name": "TREASURER",
+      "status": true,
+      "created_at": "2026-01-16T00:05:50.000Z",
+      "updated_at": "2026-01-16T00:05:50.000Z"
+    },
+    {
+      "id": "object-id",
+      "name": "MEMBER",
+      "status": true,
+      "created_at": "2026-01-16T00:05:50.000Z",
+      "updated_at": "2026-01-16T00:05:50.000Z"
+    }
+  ]
 }
 */
