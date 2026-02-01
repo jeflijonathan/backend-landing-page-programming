@@ -70,7 +70,6 @@ class UserService {
     async getAllUsers(query) {
         const { page = 1, limit = 10, search, sort, role } = query;
 
-        // Create an explicit key object with current values
         const keyParams = {
             page: parseInt(page),
             limit: parseInt(limit),
