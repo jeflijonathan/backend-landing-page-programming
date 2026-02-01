@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const redisClient = require("../../config/cache/redis").getInstance();
 
 class UploadFileService {
     constructor(uploadFileRepository) {
@@ -20,6 +21,22 @@ class UploadFileService {
 
     async getAllFiles(query) {
         const { page = 1, limit = 10 } = query;
+
+        const keyParams = {
+            page: parseInt(page),
+            limit: parseInt(limit)
+        };
+        const cacheKey = `files:${JSON.stringify(keyParams)}`;
+
+        try {
+            const cachedData = await redisClient.get(cacheKey);
+            if (cachedData) {
+                return JSON.parse(cachedData);
+            }
+        } catch (err) {
+            console.error("Redis get error:", err);
+        }
+
         const offset = (page - 1) * limit;
 
         const files = await this.uploadFileRepo.findAndCountAll({
@@ -28,7 +45,7 @@ class UploadFileService {
             order: [["created_at", "DESC"]],
         });
 
-        return {
+        const result = {
             data: files.rows,
             pagination: {
                 page: parseInt(page),
@@ -37,6 +54,14 @@ class UploadFileService {
                 total_pages: Math.ceil(files.count / limit),
             }
         };
+
+        try {
+            await redisClient.set(cacheKey, JSON.stringify(result), { EX: 60 });
+        } catch (err) {
+            console.error("Redis set error:", err);
+        }
+
+        return result;
     }
 
     async getFileById(id) {

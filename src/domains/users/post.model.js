@@ -30,7 +30,6 @@ module.exports = (sequelize) => {
             division_id: {
                 type: DataTypes.INTEGER,
             },
-            // Changed from raw string URL to Foreign Key
             profile_id: {
                 type: DataTypes.UUID,
                 references: {
@@ -39,7 +38,7 @@ module.exports = (sequelize) => {
                 },
             },
             gander: {
-                type: DataTypes.STRING, // Changed from ENUM('L', 'P') to STRING to handle existing 'male' data in DB
+                type: DataTypes.STRING,
             },
             descriptions: {
                 type: DataTypes.TEXT,

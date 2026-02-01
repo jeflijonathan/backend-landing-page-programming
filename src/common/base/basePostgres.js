@@ -5,8 +5,8 @@ class BasePostgres {
         this.model = model;
     }
 
-    async create(data) {
-        return await this.model.create(data);
+    async create(data, options) {
+        return await this.model.create(data, options);
     }
 
     async findOne(query) {
@@ -17,8 +17,8 @@ class BasePostgres {
         return await this.model.findAll(query);
     }
 
-    async findByPk(id) {
-        return await this.model.findByPk(id);
+    async findByPk(id, options) {
+        return await this.model.findByPk(id, options);
     }
 
     async update(data, query) {

@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const PostgresDatabase = require("./config/databases/postgres");
+require("./config/cache/redis");
 const Router = require("./config/router/router");
 
 // Models
