@@ -1,0 +1,6 @@
+{
+    "_comment": "This endpoint expects Multipart Form Data, not JSON.",
+    "key": "file",
+    "type": "file",
+    "value": "Select a file from your computer"
+}

@@ -16,13 +16,15 @@ class AuthService {
     async login(payload) {
         await LoginDTO.from(payload);
 
-        const { username, password } = payload;
-        const user = await this.userRepo.findByUsername(username);
+        // Login only using NPM
+        const { npm, password } = payload;
+
+        const user = await this.userRepo.findByNpmOrEmail(npm, null);
 
         if (!user) {
             throw {
                 statusCode: StatusUnauthorized,
-                message: "Invalid username or password",
+                message: "Invalid credentials",
             };
         }
 

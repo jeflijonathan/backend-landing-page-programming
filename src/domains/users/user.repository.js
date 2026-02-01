@@ -12,6 +12,20 @@ class UserRepository extends BasePostgres {
         });
     }
 
+    async findByNpmOrEmail(npm, email) {
+        const postWhere = {};
+        if (npm) postWhere.npm = npm;
+        if (email) postWhere.email = email;
+
+        return await this.findOne({
+            include: [{
+                association: "post",
+                where: postWhere,
+                required: true
+            }]
+        });
+    }
+
     async findById(id) {
         return await this.findByPk(id, {
             include: ["post"]

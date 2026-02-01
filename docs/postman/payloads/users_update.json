@@ -1,0 +1,18 @@
+{
+    "username": "jdoe_updated",
+    "password": "newpassword123",
+    "npm": "12345678",
+    "fullname": "John Doe Updated",
+    "email": "jdoe_updated@example.com",
+    "date_of_birth": "1990-01-01",
+    "phone_number": "081234567890",
+    "division_id": 1,
+    "profile_url": "c26c8ad5-1808-4ea0-a907-dc19972b23f7",
+    "gander": "Laki-laki",
+    "descriptions": "Updated description",
+    "status": true,
+    "role": [
+        "9cdbd24f-0790-459a-b949-73a71699b40f",
+        "0de5aead-6f08-4a76-9a18-501ebd5297d7"
+    ]
+}

@@ -3,7 +3,7 @@ const BaseDTO = require("../../../common/base/baseDTO");
 
 class LoginDTO extends BaseDTO {
     static schema = yup.object({
-        username: yup.string().required("username is required"),
+        npm: yup.string().required("npm is required"),
         password: yup.string().required("password is required"),
     });
 

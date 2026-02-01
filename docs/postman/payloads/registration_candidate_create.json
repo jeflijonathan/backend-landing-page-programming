@@ -1,0 +1,11 @@
+{
+    "fullname": "Jefli Jonathan",
+    "email": "jefli@example.com",
+    "npm": "1234567890",
+    "gander": "Laki-laki",
+    "date_of_birth": "2002-01-01",
+    "phone_number": "08123456789",
+    "id_candidate_recruitment_sessions": "uuid_session",
+    "id_division": "uuid_division",
+    "url_cv": "uuid_upload_file"
+}

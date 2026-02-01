@@ -1,11 +1,10 @@
 const {
     StatusBadRequest,
-    StatusOk,
 } = require("../../common/consts/statusCodes");
 const { hashPassword } = require("../../common/utils/encryption");
 const { CreateUserDTO, UpdateUserDTO } = require("./dto");
-const BaseDTO = require("../../common/base/baseDTO");
 const { Op } = require("sequelize");
+const redisClient = require("../../config/cache/redis").getInstance();
 
 class UserService {
     constructor(userRepository, postModel) {
@@ -37,7 +36,7 @@ class UserService {
                     date_of_birth: payload.date_of_birth,
                     phone_number: payload.phone_number,
                     division_id: payload.division_id,
-                    profile_url: payload.profile_url,
+                    profile_id: payload.profile_url, // Map profile_url to profile_id
                     gander: payload.gander,
                     descriptions: payload.descriptions,
                     status: payload.status,
@@ -70,6 +69,30 @@ class UserService {
 
     async getAllUsers(query) {
         const { page = 1, limit = 10, search, sort, role } = query;
+
+        // Create an explicit key object with current values
+        const keyParams = {
+            page: parseInt(page),
+            limit: parseInt(limit),
+            search: search || null,
+            sort: sort || null,
+            role: role || null
+        };
+        const cacheKey = `users:${JSON.stringify(keyParams)}`;
+
+        try {
+            const cachedData = await redisClient.get(cacheKey);
+            if (cachedData) {
+                return JSON.parse(cachedData);
+            }
+        } catch (err) {
+            throw {
+                status: "Error",
+                statusCode: StatusInternalServerError,
+                message: "Internal server error",
+            }
+        }
+
         const offset = (page - 1) * limit;
 
         const where = {};
@@ -100,8 +123,14 @@ class UserService {
             order: sort ? [[sort, "ASC"]] : [["created_at", "DESC"]],
         });
 
-        return {
-            data: users.rows,
+        const cleanedUsers = users.rows.map(user => {
+            const userJson = user.toJSON();
+            delete userJson.password;
+            return userJson;
+        });
+
+        const result = {
+            data: cleanedUsers,
             pagination: {
                 page: parseInt(page),
                 limit: parseInt(limit),
@@ -109,12 +138,30 @@ class UserService {
                 total_pages: Math.ceil(users.count / limit),
             },
         };
+
+        try {
+            await redisClient.set(cacheKey, JSON.stringify(result), { EX: 60 });
+        } catch (err) {
+            throw {
+                status: "Error",
+                statusCode: StatusInternalServerError,
+                message: "Internal server error",
+            }
+        }
+
+        return result;
     }
 
     async getUserById(id) {
-        return await this.userRepo.findByPk(id, {
+        const user = await this.userRepo.findByPk(id, {
             include: [{ model: this.PostModel, as: "post" }]
         });
+
+        if (!user) return null;
+
+        const userJson = user.toJSON();
+        delete userJson.password;
+        return userJson;
     }
 
     async updateUser(id, payload) {
@@ -135,7 +182,11 @@ class UserService {
                 const postPayload = {};
                 postFields.forEach(field => {
                     if (payload[field] !== undefined) {
-                        postPayload[field] = payload[field];
+                        if (field === 'profile_url') {
+                            postPayload['profile_id'] = payload[field];
+                        } else {
+                            postPayload[field] = payload[field];
+                        }
                     }
                 });
 
