@@ -1,5 +1,6 @@
 const BaseDTO = require("../../common/base/baseDTO");
 const { DivisionCreateDTO, UpdateDivisionDTO } = require("./dto");
+const redisClient = require("../../config/cache/redis").getInstance();
 
 class DivisionService {
     constructor(divisionRepository) {
@@ -13,6 +14,22 @@ class DivisionService {
 
     async getAllDivisions(query) {
         const { page = 1, limit = 10 } = query;
+
+        const keyParams = {
+            page: parseInt(page),
+            limit: parseInt(limit)
+        };
+        const cacheKey = `divisions:${JSON.stringify(keyParams)}`;
+
+        try {
+            const cachedData = await redisClient.get(cacheKey);
+            if (cachedData) {
+                return JSON.parse(cachedData);
+            }
+        } catch (err) {
+            console.error("Redis get error:", err);
+        }
+
         const offset = (page - 1) * limit;
 
         const divisions = await this.divisionRepo.findAndCountAll({
@@ -20,7 +37,7 @@ class DivisionService {
             offset: parseInt(offset),
         });
 
-        return {
+        const result = {
             data: divisions.rows,
             pagination: {
                 page: parseInt(page),
@@ -29,6 +46,14 @@ class DivisionService {
                 total_pages: Math.ceil(divisions.count / limit),
             },
         };
+
+        try {
+            await redisClient.set(cacheKey, JSON.stringify(result), { EX: 60 });
+        } catch (err) {
+            console.error("Redis set error:", err);
+        }
+
+        return result;
     }
 
     async getDivisionById(id) {
@@ -42,7 +67,6 @@ class DivisionService {
     }
 
     async deleteDivision(id) {
-        // Soft delete by setting deleted_at
         return await this.divisionRepo.update({ deleted_at: new Date() }, { where: { id } });
     }
 }

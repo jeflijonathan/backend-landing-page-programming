@@ -1,4 +1,5 @@
 const { CreateRoleDTO, UpdateRoleDTO } = require("./dto");
+const redisClient = require("../../config/cache/redis").getInstance();
 
 class RoleService {
     constructor(roleRepository) {
@@ -12,6 +13,22 @@ class RoleService {
 
     async getAllRoles(query) {
         const { page = 1, limit = 10 } = query;
+
+        const keyParams = {
+            page: parseInt(page),
+            limit: parseInt(limit)
+        };
+        const cacheKey = `roles:${JSON.stringify(keyParams)}`;
+
+        try {
+            const cachedData = await redisClient.get(cacheKey);
+            if (cachedData) {
+                return JSON.parse(cachedData);
+            }
+        } catch (err) {
+            console.error("Redis get error:", err);
+        }
+
         const offset = (page - 1) * limit;
 
         const roles = await this.roleRepo.findAndCountAll({
@@ -19,7 +36,7 @@ class RoleService {
             offset: parseInt(offset),
         });
 
-        return {
+        const result = {
             data: roles.rows,
             pagination: {
                 page: parseInt(page),
@@ -28,6 +45,14 @@ class RoleService {
                 total_pages: Math.ceil(roles.count / limit),
             }
         };
+
+        try {
+            await redisClient.set(cacheKey, JSON.stringify(result), { EX: 60 });
+        } catch (err) {
+            console.error("Redis set error:", err);
+        }
+
+        return result;
     }
 
     async getRoleById(id) {
