@@ -67,7 +67,6 @@ class DivisionService {
     }
 
     async deleteDivision(id) {
-        // Soft delete by setting deleted_at
         return await this.divisionRepo.update({ deleted_at: new Date() }, { where: { id } });
     }
 }

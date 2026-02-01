@@ -16,7 +16,6 @@ class AuthService {
     async login(payload) {
         await LoginDTO.from(payload);
 
-        // Login only using NPM
         const { npm, password } = payload;
 
         const user = await this.userRepo.findByNpmOrEmail(npm, null);
