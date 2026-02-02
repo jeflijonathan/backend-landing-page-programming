@@ -14,6 +14,7 @@ class PresensiController extends BaseController {
         this.router.put("/v1/presensi-sessions/:id", this.updateSession.bind(this));
         this.router.post("/v1/presensi/scan", this.scanPresensi.bind(this));
         this.router.get("/v1/presensi/history/:postId", this.getAttendanceHistory.bind(this));
+        this.router.get("/v1/presensi/export", this.exportToExcel.bind(this));
     }
 
     async getAllSessions(req, res) {
@@ -65,6 +66,26 @@ class PresensiController extends BaseController {
         try {
             const result = await this.presensiService.getAttendanceHistory(req.params.postId, req.query);
             this.handleSuccess(res, result, "Attendance History Successfully Fetched");
+        } catch (error) {
+            this.handleError(res, error);
+        }
+    }
+
+    async exportToExcel(req, res) {
+        try {
+            const workbook = await this.presensiService.exportToExcel(req.query);
+
+            res.setHeader(
+                "Content-Type",
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            );
+            res.setHeader(
+                "Content-Disposition",
+                "attachment; filename=" + `Attendance_Recap_${Date.now()}.xlsx`
+            );
+
+            await workbook.xlsx.write(res);
+            res.end();
         } catch (error) {
             this.handleError(res, error);
         }

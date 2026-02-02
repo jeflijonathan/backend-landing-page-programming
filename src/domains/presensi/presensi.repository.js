@@ -69,6 +69,27 @@ class PresensiRepository extends BasePostgres {
         });
     }
 
+    async findAttendanceForExport({ startDate, endDate }) {
+        const { Op } = require("sequelize");
+        const where = {};
+
+        if (startDate || endDate) {
+            where.created_at = {};
+            if (startDate) where.created_at[Op.gte] = new Date(startDate);
+            if (endDate) where.created_at[Op.lte] = new Date(endDate);
+        }
+
+        return await this.model.findAll({
+            where,
+            include: [
+                { model: this.sessionModel, as: "session" },
+                { association: "attendanceStatus" },
+                { association: "post" }
+            ],
+            order: [["created_at", "ASC"]],
+        });
+    }
+
     async bulkCreateAttendance(attendances, options = {}) {
         return await this.model.bulkCreate(attendances, options);
     }

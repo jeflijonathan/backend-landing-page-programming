@@ -5,6 +5,7 @@ const { CreateSessionPresensiDTO, UpdateSessionPresensiDTO, ScanPresensiDTO } = 
 const PresensiValidator = require("./presensi.validator");
 const { Op } = require("sequelize");
 const redisClient = require("../../config/cache/redis").getInstance();
+const ExcelJS = require("exceljs");
 
 class PresensiService {
     constructor(presensiRepo, postModel, roleUserModel) {
@@ -139,6 +140,75 @@ class PresensiService {
                 total_pages: Math.ceil(result.count / limit),
             },
         };
+    }
+
+    async exportToExcel(query) {
+        const { startDate, endDate } = query;
+        const attendances = await this.presensiRepo.findAttendanceForExport({ startDate, endDate });
+
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet("Recap Attendance");
+
+        const uniqueSessionTitles = [];
+
+        const memberMap = new Map();
+
+        attendances.forEach((att) => {
+            const sessionTitle = att.session?.title || "Unknown Session";
+            if (!uniqueSessionTitles.includes(sessionTitle)) {
+                uniqueSessionTitles.push(sessionTitle);
+            }
+
+            const postId = att.id_post;
+            if (!memberMap.has(postId)) {
+                memberMap.set(postId, {
+                    fullname: att.post?.fullname || "N/A",
+                    npm: att.post?.npm || "N/A",
+                    attendance: {},
+                });
+            }
+
+            memberMap.get(postId).attendance[sessionTitle] = att.attendanceStatus?.name || "N/A";
+        });
+
+        const columns = [
+            { header: "No", key: "no", width: 5 },
+            { header: "Nama Lengkap", key: "fullname", width: 30 },
+            { header: "NPM", key: "npm", width: 15 },
+        ];
+
+        uniqueSessionTitles.forEach((title) => {
+            columns.push({ header: title, key: title.replace(/\s+/g, '_'), width: 25 });
+        });
+
+        worksheet.columns = columns;
+
+        let rowCount = 1;
+        memberMap.forEach((data) => {
+            const row = {
+                no: rowCount++,
+                fullname: data.fullname,
+                npm: data.npm,
+            };
+
+            uniqueSessionTitles.forEach((title) => {
+                row[title.replace(/\s+/g, '_')] = data.attendance[title] || "-";
+            });
+
+            worksheet.addRow(row);
+        });
+
+        worksheet.getRow(1).eachCell((cell) => {
+            cell.font = { bold: true };
+            cell.alignment = { vertical: 'middle', horizontal: 'center' };
+            cell.fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: 'FFE0E0E0' }
+            };
+        });
+
+        return workbook;
     }
 }
 
