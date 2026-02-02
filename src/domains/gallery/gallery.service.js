@@ -77,7 +77,10 @@ class GalleryService {
                 }
             ],
             distinct: true,
-            order: [["created_at", "DESC"]]
+            order: [
+                ["created_at", "DESC"],
+                [{ model: this.GalleryMediaModel, as: "gallery_media" }, "display_order", "ASC"]
+            ]
         });
 
         const result = {

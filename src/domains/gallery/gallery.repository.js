@@ -13,6 +13,9 @@ class GalleryRepository extends BasePostgres {
                     include: ["media"]
                 },
                 "post"
+            ],
+            order: [
+                [{ model: this.model.sequelize.models.GalleryMedia, as: "gallery_media" }, "display_order", "ASC"]
             ]
         });
     }
