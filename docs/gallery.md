@@ -1,3 +1,41 @@
+# table name : Gallery
+table: Gallery
+---
+1. id (uuid)
+2. title
+3. description
+4. id_post (relation: Post)
+5. created_at
+6. updated_at
+7. deleted_at
+---
+table: GalleryMedia
+---
+1. id (uuid)
+2. gallery_id (relation: Gallery)
+3. media_url (relation: uploadFile)
+4. display_order
+5. created_at
+6. updated_at
+7. deleted_at
+---
+# deskription
+---
+1. Entitas: Gallery
+2. Relasi: one to many
+3. FK: id_post
+4. PK: id
+6. not null: id_post, title, description
+7. default: created_at, updated_at
+8. type: uuid, string, string, string, timestamp, timestamp
+9. controller: src/domain/gallery/controller/gallery.controller.js
+10. model: src/domain/gallery/model/gallery.model.js
+11. repository: src/domain/gallery/repository/gallery.repository.js
+12. service: src/domain/gallery/service/gallery.service.js
+13. dto: src/domain/gallery/dto/index.js (export all dto)
+14. fitur: delete, update, create, getall, getByID
+15. using baseController, basePostgress, baseDTO
+---
 ### feed /api/feed
 
 /*json
