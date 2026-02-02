@@ -1,9 +1,11 @@
 # table status_presesi_sessions
 ---
 1. id integer (PK) auto increment
-2. name string (unique) (value = waiting, open, close, canceled)
-3. created_at timestamp
-4. updated_at timestamp
+2. name string (unique) (value = waiting, open, close)
+3. status boolean (true = active, false = inactive)
+4. created_at timestamp
+5. updated_at timestamp
+6. deleted_at timestamp
 ---
 
 # table presensi_sessions
@@ -17,15 +19,8 @@
 7. status integer (FK)
 8. created_at timestamp
 9. updated_at timestamp
+10. deleted_at timestamp
 * relation status with table status
----
-
-# table presensi_allow_presensi_sessions
----
-1. id_presensi_sessions uuid (FK)
-2. id_role (FK)
-3. created_at timestamp
-4. updated_at timestamp
 ---
 
 # table presensi
@@ -34,10 +29,11 @@
 2. id_post uuid (FK)
 3. id_presensi_sessions uuid (FK)
 4. statusPresensi integer (FK)
-5. description string (null)
+5. description text (null)
 6. image_url string (null)
 7. created_at timestamp
 8. updated_at timestamp
+9. deleted_at timestamp
 * relation id_post with table post
 * relation image_url with table upload_file
 * relation id_presensi_sessions with table candidate
@@ -47,22 +43,29 @@
 # table status_presensi
 ---
 1. id integer (PK)
-2. name string
-3. created_at timestamp
-4. updated_at timestamp
+2. name string (present, absent, permission)
+3. status boolean (true = active, false = inactive)
+4. created_at timestamp
+5. updated_at timestamp
+6. deleted_at timestamp
 ---
 
 # description fitur
 ---
+description:
 1. Entity: PresensiCandidate
-2. controller: PresensiCandidateController
-3. location folder controller: App/Http/Controllers/PresensiCandidateController.php
-4. model: PresensiCandidate
-5. location folder model: App/Models/PresensiCandidate.php
-6. Request: PresensiCandidateRequest
-7. location folder App/Http/Requests/PresensiCandidateRequest.php
-8. unit test: PresensiCandidateTest
-9. location folder tests/Unit/PresensiCandidateTest.php
+2. controller: src/domains/presensi/presensi.controller.js
+3. model: src/domains/presensi/presensi.model.js
+4. DTO: 
+  a. src/domains/presensi/dto/CreateSessionpresensi.dto.js -> This feature is used to create a new session, allowing users to add new sessions to the system.
+  b. src/domains/presensi/dto/UpdateSessionpresensi.dto.js -> This feature is used to update session information and participant data, allowing users to change the participants’ attendance status.
+  c. src/domains/presensi/dto/scanPresensi.dto.js -> This feature is used to scan the participant’s attendance status.
+  d. src/domains/presensi/dto/index.js -> This feature is used to get all sessions, allowing users to view all sessions in the system.
+5. unit test: src/testing/presensi.test.js
+6. repository: src/domains/presensi/presensi.repository.js
+7. service: src/domains/presensi/presensi.service.js
+8. validator: src/domains/presensi/presensi.validator.js
+9. Create Session Filter: Allows filtering by role during session creation. A dedicated endpoint is provided to retrieve active roles or select from the available post options. This feature helps the session creation process by determining which members will participate and be included in the attendance list.
 ---
 
 ## Error Reponse Database
