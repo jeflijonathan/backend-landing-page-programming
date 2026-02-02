@@ -28,7 +28,6 @@ class UploadFileController extends BaseController {
         const uploadDir = path.join(process.cwd(), 'uploads');
         const filePath = path.join(uploadDir, filename);
 
-        // Prevent directory traversal
         if (!filename || filename.includes('..') || filename.includes('/') || filename.includes('\\')) {
             return this.handleError(res, { statusCode: 400, message: "Invalid filename" });
         }

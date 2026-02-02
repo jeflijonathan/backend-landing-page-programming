@@ -1,6 +1,8 @@
 const yup = require("yup");
 const BaseDTO = require("../../../common/base/baseDTO");
 
+const { normalizePhoneNumber } = require("../../../common/utils/stringUtils");
+
 class UpdateUserDTO extends BaseDTO {
     static schema = yup.object({
         username: yup.string().max(100),
@@ -9,14 +11,13 @@ class UpdateUserDTO extends BaseDTO {
         fullname: yup.string(),
         email: yup.string().email("invalid email"),
         date_of_birth: yup.date(),
-        phone_number: yup.string(),
+        phone_number: yup.string().transform((value) => normalizePhoneNumber(value)),
         division_id: yup.number(),
         profile_url: yup.string(),
         gander: yup.string(),
         descriptions: yup.string(),
         status: yup.boolean(),
         role: yup.array().of(yup.string()),
-        deleted_at: yup.date().nullable(),
     });
 
     static async from(payload) {
