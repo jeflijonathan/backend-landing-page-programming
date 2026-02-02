@@ -1,13 +1,15 @@
 ## table = informations
 ## column table
-# 1. id (PK)
-# 2. title
-# 3. url_file (FK)
-# 4. id_author (FK)
-# 5. description
-# 6. created_at
-# 7. updated_at
-# 8. deleted_at
+---
+1. id (PK)
+2. title
+3. url_file (FK) -> relation with upload_file
+4. id_author (FK) -> relation with post
+5. description
+6. created_at
+7. updated_at
+8. deleted_at
+---
 
 ## fitur get all informations GET /api/informasi
 # fitur search
